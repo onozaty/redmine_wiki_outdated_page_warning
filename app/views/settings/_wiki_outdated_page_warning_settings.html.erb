@@ -1,11 +1,11 @@
 <p>
   <label for="settings_days">Number of days</label>
-  <%= number_field_tag 'settings[days]', @settings[:days], size: 5 %>
+  <%= number_field_tag 'settings[days]', @settings['days'], size: 5 %>
   <em class="info">
     A warning is displayed for wiki pages that has been in this number of days since they were last updated.
   </em>
 </p>
 <p>
   <label for="settings_warning_message">Warning message</label>
-  <%= text_field_tag 'settings[warning_message]', @settings[:warning_message], size: 80 %>
+  <%= text_field_tag 'settings[warning_message]', @settings['warning_message'], size: 80 %>
 </p>

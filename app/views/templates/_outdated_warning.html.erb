@@ -1,6 +1,6 @@
 <%
-days = Setting.plugin_redmine_wiki_outdated_page_warning[:days].to_i
-warning_message = Setting.plugin_redmine_wiki_outdated_page_warning[:warning_message]
+days = Setting.plugin_redmine_wiki_outdated_page_warning['days'].to_i
+warning_message = Setting.plugin_redmine_wiki_outdated_page_warning['warning_message']
 
 if @content.current_version? && @content.updated_on.present?
   if @content.updated_on < Time.now.ago(days.days)

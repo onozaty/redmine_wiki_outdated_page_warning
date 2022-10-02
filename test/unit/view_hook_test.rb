@@ -141,5 +141,38 @@ HTML
     expected = ''
     assert_equal expected, html
   end
-  
+
+  def test_histroy
+
+    # ARRANGE
+    page = WikiPage.new(:wiki => @wiki, :title => "Page")
+    # version: 1
+    page.content = WikiContent.new(:text => "xxxxxx", :author => @user, :updated_on => Time.now.ago(400.days))
+    assert page.save
+    page.reload
+
+    # version: 2
+    page.content.text = "yyy"
+    page.content.updated_on = Time.now.ago(399.days)
+    assert page.save_with_content(page.content)
+
+    content = page.content_for_version(1)
+    assert_not content.current_version?
+
+    @controller.instance_variable_set('@content', content)
+
+    @controller.stubs(:params).returns({
+      :controller => 'wiki',
+      :action => 'show'
+    })
+
+    # ACT
+    html = @hook.view_layouts_base_body_bottom({
+      :controller => @controller
+    })
+
+    # ASSERT
+    expected = ''
+    assert_equal expected, html
+  end
 end

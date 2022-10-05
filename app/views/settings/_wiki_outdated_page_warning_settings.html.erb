@@ -8,4 +8,7 @@
 <p>
   <label for="settings_warning_message">Warning message</label>
   <%= text_field_tag 'settings[warning_message]', @settings['warning_message'], size: 80 %>
+  <em class="info">
+    "{last_updated}" will be replaced by the last updated of the wiki page.
+  </em>
 </p>

@@ -31,6 +31,8 @@ class ViewHookTest < ActiveSupport::TestCase
       :action => 'show'
     })
 
+    Setting.plugin_redmine_wiki_outdated_page_warning['warning_message'] = 'This page has not been updated in over a year.'
+
     # ACT
     html = @hook.view_layouts_base_body_bottom({
       :controller => @controller
@@ -71,6 +73,38 @@ HTML
     assert_equal expected, html
   end
  
+  def test_last_updated_message
+
+    # ARRANGE
+    page = WikiPage.new(:wiki => @wiki, :title => "Page")
+    page.content = WikiContent.new(:text => "xxxxxx", :author => @user, :updated_on => Time.parse('2021-03-28 12:21:51'))
+    assert page.save
+    page.reload
+
+    @controller.instance_variable_set('@content', page.content)
+
+    @controller.stubs(:params).returns({
+      :controller => 'wiki',
+      :action => 'show'
+    })
+
+    Setting.plugin_redmine_wiki_outdated_page_warning['warning_message'] = 'Last updated: {last_updated}'
+
+    # ACT
+    html = @hook.view_layouts_base_body_bottom({
+      :controller => @controller
+    })
+
+    # ASSERT
+    expected = <<HTML
+<script>
+  $('#content').prepend('<div class="flash warning">' + "Last updated: 03/28/2021 12:21 PM" + '</div>');
+</script>
+HTML
+
+    assert_equal expected, html
+  end
+
   def test_controller_unmatch
 
     # ARRANGE

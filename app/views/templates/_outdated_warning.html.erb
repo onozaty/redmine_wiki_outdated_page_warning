@@ -5,6 +5,9 @@ warning_message = Setting.plugin_redmine_wiki_outdated_page_warning['warning_mes
 if @content.current_version? && @content.updated_on.present?
   if @content.updated_on < Time.now.ago(days.days)
     # outdated page
+
+    last_updated = format_time(@content.updated_on)
+    warning_message = warning_message.gsub('{last_updated}', last_updated)
 %>
 <script>
   $('#content').prepend('<div class="flash warning">' + <%== warning_message.to_json %> + '</div>');

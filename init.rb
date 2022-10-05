@@ -12,6 +12,6 @@ Redmine::Plugin.register :redmine_wiki_outdated_page_warning do
 
   settings :default => {
     'days' => 365,
-    'warning_message' => 'This page has not been updated in over a year.'
+    'warning_message' => 'This page has not been updated in over a year. (Last updated: {last_updated})'
   }, :partial => 'settings/wiki_outdated_page_warning_settings'
 end
